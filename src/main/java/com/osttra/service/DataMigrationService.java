@@ -1,30 +1,37 @@
 package com.osttra.service;
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.osttra.entity.ExceptionList;
-import com.osttra.entity.MongoData;
+import com.osttra.entity.MongoEntity;
 import com.osttra.repository.ExceptionRepository;
 import com.osttra.repository.MongoDataRepository;
-
 
 @Service
 public class DataMigrationService {
 	   
 	    @Autowired
-	    private MongoDataRepository mongoDataRepository;
+	    private MongoDataRepository repository;
+	    
+	    
+	    public List<MongoEntity> getAll(){
+	    	return repository.findAll();
+	    }
+	    
+	    public MongoEntity create(MongoEntity mongoData) {
+	    	System.out.println("this is save of mongoservice");
+	        return repository.save(mongoData);
+	    }
 
 	    @Autowired
 	    private ExceptionRepository exceptionRepository;
 
 	    public void migrateData() {
 	    	
-	    	List<MongoData> mongoDataList = mongoDataRepository.findAll();
+     	List<MongoEntity> mongoDataList = repository.findAll();
 	     
-	      
-	       for (MongoData mongoData : mongoDataList) {
+	       for (MongoEntity mongoData : mongoDataList) {
 	            ExceptionList exceptoinList = new ExceptionList();
 	            exceptoinList.setExceptionId(mongoData.getExceptionId());
 	            exceptoinList.setTradeId(mongoData.getTradeId());
